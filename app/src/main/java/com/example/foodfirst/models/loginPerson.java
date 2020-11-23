@@ -4,6 +4,7 @@ public class loginPerson {
     String personName;
     String personNumber;
 
+public loginPerson(){}
 
     public loginPerson(String personName, String personNumber) {
         this.personName = personName;

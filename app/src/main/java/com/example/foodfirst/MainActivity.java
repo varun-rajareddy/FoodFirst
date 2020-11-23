@@ -3,26 +3,31 @@ package com.example.foodfirst;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.foodfirst.models.loginPerson;
+
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.DocumentReference;
+
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class MainActivity extends AppCompatActivity{
+    public static final String TAG = "MainActivity";
+    public static final String KEY_NAME1 = "name";
+    public static final String KEY_NAME2 = "number";
 
-    Button LoginBtn;
-    EditText personName;
-    EditText personNumber;
+    public EditText personName;
+    public EditText personNumber;
 
-
-    FirebaseFirestore db;
+    public FirebaseFirestore db = FirebaseFirestore.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,32 +38,37 @@ public class MainActivity extends AppCompatActivity{
         personName = findViewById(R.id.personName);
         personNumber = findViewById(R.id.personNumber);
 
-        LoginBtn= findViewById(R.id.loginbtn);
-        db = FirebaseFirestore.getInstance();
+        Button LoginBtn= (Button) findViewById(R.id.loginbtn);
 
         LoginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String name=personName.getText().toString();
-                String number=personNumber.getText().toString();
-                loginDetails(name, number);
-
+             openActivity2();
+                loginDetails();
             }
         });
+    }
 
-
-
+    public void openActivity2() {
+        Intent intent = new Intent(this, Activity2.class);
+        startActivity(intent);
     }
 
 
-    public void loginDetails(String personName, String personNumber) {
-    loginPerson name1 = new loginPerson(personName,personNumber);
-        db.collection("loginPerson")
-                .add(name1)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+    public void loginDetails() {
+
+        String name = personName.getText().toString();
+        String number = personNumber.getText().toString();
+
+        Map<String, Object> details = new HashMap<>();
+        details.put(KEY_NAME1 , name);
+        details.put(KEY_NAME2 , number);
+        db.collection("loginPerson").document("logindetails")
+                .set(details)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
-            public void onSuccess(DocumentReference documentReference) {
-                Toast.makeText(getApplicationContext(), "logged in" , Toast.LENGTH_LONG).show();
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(MainActivity.this, "logged in", Toast.LENGTH_LONG).show();
             }
         })
 .addOnFailureListener(new OnFailureListener() {
