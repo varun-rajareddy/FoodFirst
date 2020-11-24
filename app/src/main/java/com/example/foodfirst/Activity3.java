@@ -3,6 +3,7 @@ package com.example.foodfirst;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -41,37 +42,47 @@ public class Activity3 extends AppCompatActivity {
 
         itemName1 = findViewById(R.id.itemName1);
         itemName2 = findViewById(R.id.itemName2);
-        itemName3 = findViewById(R.id.itemName3);
+       itemName3 = findViewById(R.id.itemName3);
         itemPrice1 = findViewById(R.id.itemPrice1);
         itemPrice2 = findViewById(R.id.itemPrice2);
-        itemPrice3 = findViewById(R.id.itemPrice3);
+       itemPrice3 = findViewById(R.id.itemPrice3);
 
 
-        Button buy1= (Button) findViewById(R.id.buy1);
-        Button buy2= (Button) findViewById(R.id.buy2);
-        Button buy3= (Button) findViewById(R.id.buy3);
+        Button buy1= (Button) findViewById(R.id.btnBuy1);
+        Button buy2= (Button) findViewById(R.id.btnBuy2);
+        Button buy3= (Button) findViewById(R.id.btnBuy3);
 
 
         buy1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 savedata1();
+
+                    openBookingConfirmation();
+
             }
         });
         buy2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 savedata2();
+                openBookingConfirmation();
             }
         });
         buy3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 savedata3();
+                openBookingConfirmation();
             }
         });
     }
 
+    public void openBookingConfirmation() {
+
+        Intent intent4 = new Intent(this,bookingConfirmation.class);
+        startActivity(intent4);
+    }
 
     public void savedata1(){
         String OrderedItem = itemName1.getText().toString();
